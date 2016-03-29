@@ -1,0 +1,52 @@
+<!--
+Copyright (c) 2016 The Ayla Project Authors.
+This code may only be used under the MIT style license found at http://aylaweb.github.io/LICENSE.txt
+The complete set of authors may be found at http://aylaweb.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://aylaweb.github.io/CONTRIBUTORS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+    Ayla = window.Ayla || {};
+    Ayla.VipStyleBehavior = {
+        properties: {
+            styleProps: {
+                type: Array,
+                value: function () {
+                    return [];
+                }
+            },
+            customStyles: {
+                type: Object,
+                value: function () {
+                    return {};
+                }
+            }
+        },
+        created: function () {
+            console.log(this.id + " -> " + this.localName + " -> vip-style -> Event created");
+        },
+        attached: function () {
+            console.log(this.id + " -> " + this.localName + " -> vip-style -> Event attached");
+            
+        },
+        ready: function () {
+            console.log(this.id + " -> " + this.localName + " -> vip-style -> Event ready");
+            if (this.styleProps && this.styleProps.length > 0) {
+                this.styleProps.forEach(function (cssRule) {
+                    Polymer.dom(document).querySelector('head').querySelector('style[scope="vip-layout"]').innerText = Polymer.dom(document).querySelector('head').querySelector('style[scope="vip-layout"]').innerText + " " + cssRule.selector + " " + JSON.stringify(cssRule).replace(/\,/g, ";").replace(/\"([^(\")"]+)\"/g, "$1");
+                });
+            }
+            if (this.customStyles && this.customStyles.length > 0) {
+                _.forEach(this.customStyles, function (val, key) {
+                    this.customStyle[key] = val;
+                    this.updateStyles();
+                }, this);
+            }
+        },
+        detached: function () {
+            console.log(this.id + " -> " + this.localName + " -> vip-style -> Event detached");
+        }
+    };
+</script>
